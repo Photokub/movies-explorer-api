@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Photokub/movies-explorer-api/issues"
   },
-  "homepage": "https://github.com/Photokub/movies-explorer-api#readme"
+  "dependencies": {
+    "mongoose": "^6.9.2",
+    "validator": "^13.9.0"
+  }
 }
