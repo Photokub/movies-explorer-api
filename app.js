@@ -7,8 +7,8 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-const { login, createUser} = require('./controllers/users')
 const { PORT = 3000, JWT_SECRET } = process.env;
+const { login, createUser} = require('./controllers/users')
 
 mongoose.connect('mongodb://127.0.0.1:27017/filmsdb');
 
