@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
-import { isEmail } from 'validator';
-
+const { isEmail } = require('validator');
 
 const userSchema = new Schema({
   email:{
