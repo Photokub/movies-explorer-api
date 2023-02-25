@@ -12,9 +12,9 @@ const {JWT_SECRET} = process.env;
 
 const createUser = (req, res, next) => {
   const {
-    name,
     email,
     password,
+    name
   } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
