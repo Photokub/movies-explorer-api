@@ -116,9 +116,9 @@ const updateUserData = (req, res, next) => {
     .then((user) => getUserData(user, res, next))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        throw next(new BadRequestErr('Передан невалидный id пользователя'));
+        return next(new BadRequestErr('Передан невалидный id пользователя'));
       }
-      throw next(err);
+      return next(err);
     });
 };
 

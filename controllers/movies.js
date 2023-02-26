@@ -12,7 +12,7 @@ const getMovies = async (req, res, next) => {
     const movies = await Movie.find({}).populate('owner');
     return res.send(movies);
   } catch (err) {
-    throw next(err);
+    return next(err);
   }
 };
 
@@ -23,7 +23,7 @@ const saveMovie = async (req, res, next) => {
     return res.status(201).send(movie);
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
-      throw next(new BadRequestErr('Ошибка валидации'));
+      return next(new BadRequestErr('Ошибка валидации'));
     }
     return next(err);
   }
@@ -45,9 +45,9 @@ const deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        throw next(new BadRequestErr('Переданы некорректные данные при создании карточки фильма'));
+        return next(new BadRequestErr('Переданы некорректные данные при создании карточки фильма'));
       }
-      throw next(err);
+      return next(err);
     });
 };
 
