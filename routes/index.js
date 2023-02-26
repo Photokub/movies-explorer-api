@@ -3,12 +3,13 @@ const routerUsers = require('./users');
 const routerMovies = require('./movies');
 const routerAuth = require('./auth');
 const auth = require('../middlewares/auth');
-const { NotFoundError } = require('../errors/not-found-err');
+const { notFoundError }  = require('../middlewares/not-found-err');
 
 router.use('/users', auth, routerUsers);
 router.use('/movies', auth, routerMovies);
 router.use('/', routerAuth);
-router.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
+router.use('*', notFoundError);
+//router.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
 
 module.exports = router;
 

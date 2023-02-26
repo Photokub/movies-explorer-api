@@ -10,6 +10,27 @@ const BadRequestErr = require('../errors/bad-request-err');
 
 const {JWT_SECRET} = process.env;
 
+// const createUser = async (req, res, next) => {
+//   try {
+//     const { email, password, name } =  req.body;
+//     const hash =  bcrypt.hash(password, 10)
+//     const user = await User.create({
+//       email,
+//       password: hash,
+//       name
+//     })
+//     return res.send(user)
+//   } catch (err) {
+//     if (err instanceof mongoose.Error.ValidationError) {
+//       throw next(new BadRequestErr('Переданы некорректные данные пользователя'));
+//     }
+//     if (err.code === 11000) {
+//       throw next(new ConflictErr(`Пользователь с ${email} уже существует`));
+//     }
+//     throw next(err);
+//   }
+// };
+
 const createUser = (req, res, next) => {
   const {
     email,
@@ -25,12 +46,12 @@ const createUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        throw next(new BadRequestErr('Переданы некорректные данные пользователя'));
+        return next(new BadRequestErr('Переданы некорректные данные пользователя'));
       }
       if (err.code === 11000) {
-        throw next(new ConflictErr(`Пользователь с ${email} уже существует`));
+        return next(new ConflictErr(`Пользователь с ${email} уже существует`));
       }
-      throw next(err);
+      return next(err);
     });
 };
 
@@ -56,7 +77,7 @@ const login = async (req, res, next) => {
       secure: true,
     }).send({_id: user._id, user: user.email, message: 'Токен jwt передан в cookie'});
   } catch (err) {
-    throw next(err);
+    return  next(err);
   }
 };
 
@@ -101,7 +122,7 @@ const updateUserData = (req, res, next) => {
     });
 };
 
-module.exports={
+module.exports = {
   getUserProfile,
   updateUserData,
   login,

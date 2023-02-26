@@ -5,15 +5,18 @@ const mongoose = require("mongoose");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const bodyParser = require('body-parser')
 
 const app = express();
 
 const { PORT = 3000, JWT_SECRET } = process.env;
-//const { login, createUser} = require('./controllers/users')
-//const auth = require('./middlewares/auth');
+const { login, createUser} = require('./controllers/users')
+const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-//const NotFoundError = require('./errors/not-found-err');
+const { errors } = require('celebrate');
+const NotFoundError = require('./errors/not-found-err');
 const router = require('./routes/index');
+const { validateLogin, validateReg} = require('./middlewares/validator');
 
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://localhost:27017/filmsdb');
@@ -24,10 +27,12 @@ app.listen(PORT, () => {
 });
 
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
+app.use(router);
+
 app.use(requestLogger);
-app.use(router)
 
 const allowedCors = [
   'http://localhost:3000/',
@@ -50,16 +55,17 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-// app.use('/signup', createUser)
-// app.use('/signin', login)
-//
+// app.use('/signup', validateReg, createUser)
+// app.use('/signin', validateLogin, login)
+
 // app.use(auth);
 //
 // app.use('/users', require('./routes/users'));
-// app.use('/movies', require('./routes/movies'));
+// TODO //app.use('/movies', require('./routes/movies'));
 
 app.use(errorLogger);
 
 //app.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
 
+app.use(errors());
 app.use(require('./middlewares/errors'));
