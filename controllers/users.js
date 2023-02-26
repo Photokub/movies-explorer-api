@@ -60,6 +60,11 @@ const login = async (req, res, next) => {
   }
 };
 
+const logOut = (req, res, next) => {
+  res.clearCookie('jwt').send({message: 'Успешный выход из аккаунта'})
+    .catch(next);
+}
+
 function getUserData(id, res, next) {
   if (!id) {
     return next(new NotFoundError('Пользователь не найден'));
@@ -100,5 +105,6 @@ module.exports={
   getUserProfile,
   updateUserData,
   login,
+  logOut,
   createUser
 }

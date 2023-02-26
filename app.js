@@ -9,10 +9,11 @@ const helmet = require('helmet');
 const app = express();
 
 const { PORT = 3000, JWT_SECRET } = process.env;
-const { login, createUser} = require('./controllers/users')
-const auth = require('./middlewares/auth');
+//const { login, createUser} = require('./controllers/users')
+//const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const NotFoundError = require('./errors/not-found-err');
+const router = require('./routes/index');
 
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://localhost:27017/filmsdb');
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use(requestLogger);
+app.use(router)
 
 const allowedCors = [
   'http://localhost:3000/',
@@ -48,13 +50,13 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use('/signup', createUser)
-app.use('/signin', login)
-
-app.use(auth);
-
-app.use('/users', require('./routes/users'));
-app.use('/movies', require('./routes/movies'));
+// app.use('/signup', createUser)
+// app.use('/signin', login)
+//
+// app.use(auth);
+//
+// app.use('/users', require('./routes/users'));
+// app.use('/movies', require('./routes/movies'));
 
 app.use(errorLogger);
 
