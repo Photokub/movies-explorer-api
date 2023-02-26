@@ -12,7 +12,7 @@ const { PORT = 3000, JWT_SECRET } = process.env;
 //const { login, createUser} = require('./controllers/users')
 //const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const NotFoundError = require('./errors/not-found-err');
+//const NotFoundError = require('./errors/not-found-err');
 const router = require('./routes/index');
 
 mongoose.set('strictQuery', false);
@@ -60,6 +60,6 @@ app.get('/crash-test', () => {
 
 app.use(errorLogger);
 
-app.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
+//app.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
 
 app.use(require('./middlewares/errors'));
