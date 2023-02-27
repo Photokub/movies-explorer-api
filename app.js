@@ -19,7 +19,7 @@ const router = require('./routes/index');
 const { validateLogin, validateReg} = require('./middlewares/validator');
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://localhost:27017/filmsdb');
+mongoose.connect('mongodb://127.0.0.1:27017/filmsdb');
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
@@ -32,7 +32,7 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(router);
 
-//app.use(requestLogger);
+app.use(requestLogger);
 
 const allowedCors = [
   'http://localhost:3000/',
@@ -63,7 +63,7 @@ app.get('/crash-test', () => {
 // app.use('/users', require('./routes/users'));
 // TODO //app.use('/movies', require('./routes/movies'));
 
-//app.use(errorLogger);
+app.use(errorLogger);
 
 //app.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
 
