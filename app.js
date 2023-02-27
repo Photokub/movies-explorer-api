@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 
 const app = express();
 
-const { PORT = 3000, JWT_SECRET } = process.env;
+const { PORT = 3001, JWT_SECRET } = process.env;
 const { login, createUser} = require('./controllers/users')
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
