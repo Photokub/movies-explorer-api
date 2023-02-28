@@ -1,17 +1,17 @@
 require('dotenv').config();
 
 const express = require('express');
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const app = express();
 
 const { PORT = 3001, JWT_SECRET } = process.env;
-const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errors } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
 
 mongoose.set('strictQuery', false);
@@ -44,7 +44,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-//краш-тест
+// краш-тест
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');

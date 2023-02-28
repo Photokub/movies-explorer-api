@@ -3,9 +3,7 @@ const Movie = require('../models/movies');
 
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
-const ConflictErr = require('../errors/conflict-err');
-const UnauthorizedErr = require('../errors/unauth-err');
-const  ForbiddenError = require('../errors/forbidden-err')
+const ForbiddenError = require('../errors/forbidden-err');
 
 const getMovies = async (req, res, next) => {
   try {
@@ -18,8 +16,32 @@ const getMovies = async (req, res, next) => {
 
 const saveMovie = async (req, res, next) => {
   try {
-    const {country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId} = req.body;
-    const movie = (await Movie.create({country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId}));
+    const {
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailer,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+    } = req.body;
+    const movie = (await Movie.create({
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailer,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+    }));
     return res.status(201).send(movie);
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
@@ -32,7 +54,7 @@ const saveMovie = async (req, res, next) => {
 const deleteMovie = (req, res, next) => {
   const movieId = req.movieId._id;
 
-  Movie.findById({_id: req.params._id})
+  Movie.findById({ _id: req.params._id })
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Невозможно найти');
@@ -40,8 +62,8 @@ const deleteMovie = (req, res, next) => {
       if (!movie.owner.equals(movieId)) {
         throw new ForbiddenError('Невозможно удалить');
       }
-      movie.remove({_id: req.params._id})
-        .then(() => res.send({message: 'Фильм удален'})).catch(next);
+      movie.remove({ _id: req.params._id })
+        .then(() => res.send({ message: 'Фильм удален' })).catch(next);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
@@ -54,5 +76,5 @@ const deleteMovie = (req, res, next) => {
 module.exports = {
   getMovies,
   saveMovie,
-  deleteMovie
-}
+  deleteMovie,
+};

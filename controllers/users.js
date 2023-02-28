@@ -8,7 +8,7 @@ const UnauthorizedErr = require('../errors/unauth-err');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
 
-const {JWT_SECRET} = process.env;
+const { JWT_SECRET } = process.env;
 
 // const createUser = async (req, res, next) => {
 //   try {
@@ -35,7 +35,7 @@ const createUser = (req, res, next) => {
   const {
     email,
     password,
-    name
+    name,
   } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
@@ -61,7 +61,7 @@ const login = async (req, res, next) => {
     password,
   } = req.body;
   try {
-    const user = await User.findOne({email}).select('+password');
+    const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
@@ -69,22 +69,22 @@ const login = async (req, res, next) => {
     if (!result) {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
-    const token = jwt.sign({_id: user._id}, JWT_SECRET, {expiresIn: '7d'});
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
     return res.cookie('jwt', token, {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
       sameSite: 'none',
       secure: true,
-    }).send({_id: user._id, user: user.email, message: 'Токен jwt передан в cookie'});
+    }).send({ _id: user._id, user: user.email, message: 'Токен jwt передан в cookie' });
   } catch (err) {
-    return  next(err);
+    return next(err);
   }
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt').send({message: 'Успешный выход из аккаунта'})
+  res.clearCookie('jwt').send({ message: 'Успешный выход из аккаунта' })
     .catch(next);
-}
+};
 
 function getUserData(id, res, next) {
   if (!id) {
@@ -100,7 +100,7 @@ const getUserProfile = (req, res, next) => {
 };
 
 const updateUserData = (req, res, next) => {
-  const {body} = req;
+  const { body } = req;
   User.findByIdAndUpdate(
     req.user._id,
     {
@@ -127,5 +127,5 @@ module.exports = {
   updateUserData,
   login,
   logOut,
-  createUser
-}
+  createUser,
+};
