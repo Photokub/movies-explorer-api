@@ -7,10 +7,6 @@ const { validateLogin, validateReg} = require('../middlewares/validator');
 
 routerAuth.post('/signup', validateReg, createUser);
 routerAuth.post('/signin', validateLogin, login);
-//routerAuth.post('/signup', createUser);
-routerAuth.post('/signin', login);
-//TODO//routerAuth.post('/logout', logOut);
+routerAuth.post('/logout', logOut);
 
 module.exports = routerAuth;
-
-// app.use('/signup', createUser)

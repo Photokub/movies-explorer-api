@@ -10,13 +10,9 @@ const bodyParser = require('body-parser')
 const app = express();
 
 const { PORT = 3001, JWT_SECRET } = process.env;
-const { login, createUser} = require('./controllers/users')
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errors } = require('celebrate');
-const NotFoundError = require('./errors/not-found-err');
 const router = require('./routes/index');
-const { validateLogin, validateReg} = require('./middlewares/validator');
 
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://127.0.0.1:27017/filmsdb');
@@ -55,17 +51,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-// app.use('/signup', validateReg, createUser)
-// app.use('/signin', validateLogin, login)
-
-// app.use(auth);
-//
-// app.use('/users', require('./routes/users'));
-// TODO //app.use('/movies', require('./routes/movies'));
-
 app.use(errorLogger);
-
-//app.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
 
 app.use(errors());
 app.use(require('./middlewares/errors'));

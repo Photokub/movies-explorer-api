@@ -28,7 +28,7 @@ module.exports.validateMovieCreation = celebrate({
     country: Joi.string().required().min(2).max(300),
     director: Joi.string().required().min(2).max(300),
     duration: Joi.number().required().min(2).max(300),
-    year: Joi.number().required().min(2).max(300),
+    year: Joi.number().required().min(1800).max(2023),
     description: Joi.string().required().min(2).max(300),
     image: Joi.string()
       .required()

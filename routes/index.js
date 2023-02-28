@@ -9,7 +9,6 @@ router.use('/users', auth, routerUsers);
 router.use('/movies', auth, routerMovies);
 router.use('/', routerAuth);
 router.use('*', notFoundError);
-//router.use('*', (req, res, next) => next(new NotFoundError('404 Старница не найдена')));
 
 module.exports = router;
 
