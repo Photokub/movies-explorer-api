@@ -16,34 +16,6 @@ const getMovies = async (req, res, next) => {
 
 const saveMovie = async (req, res, next) => {
   try {
-    // const ownerId = req.user._id
-    // const {
-    //   country,
-    //   director,
-    //   duration,
-    //   year,
-    //   description,
-    //   image,
-    //   trailer,
-    //   nameRU,
-    //   nameEN,
-    //   thumbnail,
-    //   movieId,
-    // } = req.body;
-    // const movie = (await Movie.create({
-    //   country,
-    //   director,
-    //   duration,
-    //   year,
-    //   description,
-    //   image,
-    //   trailer,
-    //   nameRU,
-    //   nameEN,
-    //   thumbnail,
-    //   movieId,
-    //   owner: ownerId
-    // }));
     const movie = await Movie.create({ ...req.body, owner: req.user._id })
     return res.status(201).send(movie);
   } catch (err) {
@@ -55,17 +27,19 @@ const saveMovie = async (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  const movieId = req.movieId._id;
+  //const movieId = req.movieId._id;
 
-  Movie.findById({ _id: req.params._id })
+  //Movie.findById({ _id: req.params._id })
+  Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Невозможно найти');
       }
-      if (!movie.owner.equals(movieId)) {
+      //if (!movie.owner.equals(movieId)) {
+      if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Невозможно удалить');
       }
-      movie.remove({ _id: req.params._id })
+      movie.remove()
         .then(() => res.send({ message: 'Фильм удален' })).catch(next);
     })
     .catch((err) => {
