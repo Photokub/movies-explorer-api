@@ -16,34 +16,35 @@ const getMovies = async (req, res, next) => {
 
 const saveMovie = async (req, res, next) => {
   try {
-    const ownerId = req.user._id
-    const {
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailer,
-      nameRU,
-      nameEN,
-      thumbnail,
-      movieId,
-    } = req.body;
-    const movie = (await Movie.create({
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailer,
-      nameRU,
-      nameEN,
-      thumbnail,
-      movieId,
-      owner: ownerId
-    }));
+    // const ownerId = req.user._id
+    // const {
+    //   country,
+    //   director,
+    //   duration,
+    //   year,
+    //   description,
+    //   image,
+    //   trailer,
+    //   nameRU,
+    //   nameEN,
+    //   thumbnail,
+    //   movieId,
+    // } = req.body;
+    // const movie = (await Movie.create({
+    //   country,
+    //   director,
+    //   duration,
+    //   year,
+    //   description,
+    //   image,
+    //   trailer,
+    //   nameRU,
+    //   nameEN,
+    //   thumbnail,
+    //   movieId,
+    //   owner: ownerId
+    // }));
+    const movie = await Movie.create({ ...req.body, owner: req.user._id })
     return res.status(201).send(movie);
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
