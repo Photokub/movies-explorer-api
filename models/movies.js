@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Schema } = require('mongoose');
+//const { Schema } = require('mongoose');
 const validator = require('validator');
 
 const movieSchema = new Schema({
@@ -26,35 +26,35 @@ const movieSchema = new Schema({
   image: {
     type: String,
     required: true,
-    // validate: {
-    //   validator(url) {
-    //     return validator.isURL(url);
-    //   },
-    //   message: 'ссылка не валидна',
-    // },
+    validate: {
+      validator(url) {
+        return validator.isURL(url);
+      },
+      message: 'ссылка не валидна',
+    },
   },
   trailerLink: {
     type: String,
     required: true,
-    // validate: {
-    //   validator(url) {
-    //     return validator.isURL(url);
-    //   },
-    //   message: 'ссылка не валидна',
-    // },
+    validate: {
+      validator(url) {
+        return validator.isURL(url);
+      },
+      message: 'ссылка не валидна',
+    },
   },
   thumbnail: {
     type: String,
     required: true,
-    // validate: {
-    //   validator(url) {
-    //     return validator.isURL(url);
-    //   },
-    //   message: 'ссылка не валидна',
-    // },
+    validate: {
+      validator(url) {
+        return validator.isURL(url);
+      },
+      message: 'ссылка не валидна',
+    },
   },
   owner: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
   },
