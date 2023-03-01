@@ -39,7 +39,8 @@ const deleteMovie = (req, res, next) => {
         throw new ForbiddenError('Невозможно удалить');
       }
       movie.remove()
-        .then(() => res.send({ message: 'Фильм удален' })).catch(next);
+        //.then(() => res.send({ message: 'Фильм удален' })).catch(next);
+        .then(() => res.send({ message: 'Фильм удален' }));
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
