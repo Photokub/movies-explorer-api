@@ -27,9 +27,9 @@ module.exports.validateMovieCreation = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required().min(2).max(300),
     director: Joi.string().required().min(2).max(300),
-    duration: Joi.number().required().min(2).max(300),
-    year: Joi.number().required().min(1800).max(2023),
-    description: Joi.string().required().min(2).max(300),
+    duration: Joi.number().required(),
+    year: Joi.number().required().min(2).max(4),
+    description: Joi.string().required().min(2).max(3000),
     image: Joi.string()
       .required()
       .custom((value) => {
@@ -54,7 +54,7 @@ module.exports.validateMovieCreation = celebrate({
         }
         return value;
       }),
-    movieId: Joi.string().required().min(2).max(300),
+    movieId: Joi.number().required(),
     nameRU: Joi.string().required().min(2).max(300),
     nameEN: Joi.string().required().min(2).max(300),
   }),
