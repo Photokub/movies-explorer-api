@@ -18,8 +18,8 @@ module.exports.validateLogin = celebrate({
 
 module.exports.validateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
+    email: Joi.string().required().email(),
+    name: Joi.string().min(2).max(30),
   }),
 });
 
