@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-//const { Schema } = require('mongoose');
+const { Schema } = require('mongoose');
 const validator = require('validator');
 
 const movieSchema = new Schema({
@@ -54,7 +54,7 @@ const movieSchema = new Schema({
     },
   },
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'user',
     required: true,
   },
