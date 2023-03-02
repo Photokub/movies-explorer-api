@@ -31,6 +31,7 @@ const deleteMovie = (req, res, next) => {
 
   Movie.findById({ _id: req.params._id })
     .then((movie) => {
+      console.log(movie)
       if (!movie) {
         throw new NotFoundError('Невозможно найти');
       }
