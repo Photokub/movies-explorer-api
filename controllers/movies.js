@@ -36,7 +36,7 @@ const saveMovie = async (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.id)
+  Movie.findById(req.params.movieId)
     .then((movie) => {
       console.log(movie)
       if (!movie) {
