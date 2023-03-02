@@ -15,7 +15,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://127.0.0.1:27017/moviedb');
+mongoose.connect('mongodb://127.0.0.1:27017/filmsdb');
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
