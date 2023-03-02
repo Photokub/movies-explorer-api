@@ -8,6 +8,6 @@ const { notFoundError } = require('../middlewares/not-found-err');
 router.use('/users', auth, routerUsers);
 router.use('/movies', auth, routerMovies);
 router.use('/', routerAuth);
-router.use('*', notFoundError);
+//router.use('*', notFoundError);
 
 module.exports = router;
