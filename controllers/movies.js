@@ -28,10 +28,11 @@ const saveMovie = async (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   //const movieId = req.movieId._id;
-
+const { id } = req.params;
   //Movie.findById({ _id: req.params._id })
-  Movie.findById( req.params._id)
+  Movie.findById(id)
     .then((movie) => {
+      console.log(movie)
       if (!movie) {
         throw new NotFoundError('Невозможно найти');
       }
