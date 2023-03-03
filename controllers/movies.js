@@ -14,13 +14,14 @@ const getMovies = async (req, res, next) => {
   }
 };
 
-// const getCurrentMovie = async (req, res, next) => {
-//   try {
-//     res.send(req.params)
-//   } catch (err) {
-//     return next(err);
-//   }
-// };
+const getCurrentMovie = async (req, res, next) => {
+  try {
+    const movie = await Movie.findById({ id: req.params._id }).populate('owner');
+    return res.send(movie);
+  } catch (err) {
+    return next(err);
+  }
+};
 
 const saveMovie = async (req, res, next) => {
   try {
@@ -61,5 +62,5 @@ module.exports = {
   getMovies,
   saveMovie,
   deleteMovie,
-  //getCurrentMovie
+  getCurrentMovie
 };
