@@ -61,5 +61,5 @@ module.exports = {
   getMovies,
   saveMovie,
   deleteMovie,
-  getCurrentMovie
+  //getCurrentMovie
 };
