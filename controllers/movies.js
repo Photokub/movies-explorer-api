@@ -14,13 +14,13 @@ const getMovies = async (req, res, next) => {
   }
 };
 
-const getCurrentMovie = async (req, res, next) => {
-  try {
-    res.send(req.params)
-  } catch (err) {
-    return next(err);
-  }
-};
+// const getCurrentMovie = async (req, res, next) => {
+//   try {
+//     res.send(req.params)
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
 
 const saveMovie = async (req, res, next) => {
   try {
