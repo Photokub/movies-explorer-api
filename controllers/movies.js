@@ -25,7 +25,7 @@ const getMovies = async (req, res, next) => {
 
 const paramsTest = async (req, res) => {
   try {
-    res.send(req.params);
+    await res.send(req.params);
   } catch (err) {
     return err;
   }
