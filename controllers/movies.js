@@ -14,23 +14,6 @@ const getMovies = async (req, res, next) => {
   }
 };
 
-//TODO// const getCurrentMovie = async (req, res, next) => {
-//   try {
-//     const movie = await Movie.findById({ id: req.params._id }).populate('owner');
-//     return res.send(movie);
-//   } catch (err) {
-//     return next(err);
-//   }
-// };
-
-const paramsTest = async (req, res) => {
-  try {
-    await res.send(req.params);
-  } catch (err) {
-    return err;
-  }
-};
-
 const saveMovie = async (req, res, next) => {
   try {
     const movie = await Movie.create({ ...req.body, owner: req.user._id })
@@ -50,12 +33,10 @@ const deleteMovie = (req, res, next) => {
       if (!movie) {
         throw new NotFoundError('Невозможно найти');
       }
-      //if (!movie.owner.equals(movieId)) {
       if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Невозможно удалить');
       }
       movie.remove()
-        //.then(() => res.send({ message: 'Фильм удален' })).catch(next);
         .then(() => res.send({ message: 'Фильм удален' }));
     })
     .catch((err) => {
@@ -70,6 +51,4 @@ module.exports = {
   getMovies,
   saveMovie,
   deleteMovie,
-  //getCurrentMovie,
-  paramsTest
 };

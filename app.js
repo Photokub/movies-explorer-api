@@ -28,10 +28,6 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(router);
 
-app.get('/:id', (req, res) => {
-  res.send(req.params);  
-});
-
 app.use(requestLogger);
 
 const allowedCors = [
