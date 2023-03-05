@@ -83,12 +83,15 @@ const getUserProfile = (req, res, next) => {
 };
 
 const updateUserData = (req, res, next) => {
-  const {body} = req;
+  const {
+    email,
+    name,
+  } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
     {
-      name: body.name,
-      email: body.email,
+      name: name,
+      email: email,
     },
     {
       new: true,
@@ -98,35 +101,15 @@ const updateUserData = (req, res, next) => {
     .orFail(() => new NotFoundError('Ничего не найдено'))
     .then((user) => getUserData(user, res, next))
     .catch((err) => {
+      if (err.code === 11000) {
+        return next(new ConflictErr(`Пользователь с ${email} уже существует`));
+      }
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new BadRequestErr('Передан невалидный id пользователя'));
+        return next(new BadRequestErr('Введены некорректные данные'));
       }
       return next(err);
     });
 };
-
-// const updateUserData = (req, res, next) => {
-//   const {body} = req;
-//   User.findByIdAndUpdate(
-//     req.user._id,
-//     {
-//       name: body.name,
-//       email: body.email,
-//     },
-//     {
-//       new: true,
-//       runValidators: true,
-//     },
-//   )
-//     .orFail(() => new NotFoundError('Ничего не найдено'))
-//     .then((user) => getUserData(user, res, next))
-//     .catch((err) => {
-//       if (err instanceof mongoose.Error.ValidationError) {
-//         return next(new BadRequestErr('Передан невалидный id пользователя'));
-//       }
-//       return next(err);
-//     });
-// };
 
 module.exports = {
   getUserProfile,
