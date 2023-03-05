@@ -7,7 +7,7 @@ const ForbiddenError = require('../errors/forbidden-err');
 
 const getMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({}).populate('owner');
+    const movies = await Movie.find({owner: req.user._id}).populate('owner');
     return res.send(movies);
   } catch (err) {
     return next(err);
@@ -29,7 +29,6 @@ const saveMovie = async (req, res, next) => {
 const deleteMovie = (req, res, next) => {
   Movie.findById(req.params.id)
     .then((movie) => {
-      console.log(movie)
       if (!movie) {
         throw new NotFoundError('Невозможно найти');
       }
