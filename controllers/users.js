@@ -8,7 +8,7 @@ const UnauthorizedErr = require('../errors/unauth-err');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
 
-const { JWT_SECRET } = process.env;
+const {JWT_SECRET} = process.env;
 
 const createUser = (req, res, next) => {
   const {
@@ -22,7 +22,11 @@ const createUser = (req, res, next) => {
       password: hash,
       name,
     }))
-    .then((user) => res.send(user))
+    .then((user) => res.send({
+      name: user.name,
+      email: user.email,
+      id: user._id
+    }))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new BadRequestErr('Переданы некорректные данные пользователя'));
@@ -40,7 +44,7 @@ const login = async (req, res, next) => {
     password,
   } = req.body;
   try {
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({email}).select('+password');
     if (!user) {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
@@ -48,20 +52,20 @@ const login = async (req, res, next) => {
     if (!result) {
       return next(new UnauthorizedErr('Ошибка авторизации 401'));
     }
-    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({_id: user._id}, JWT_SECRET, {expiresIn: '7d'});
     return res.cookie('jwt', token, {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
       sameSite: 'none',
       secure: true,
-    }).send({ _id: user._id, user: user.email, message: 'Токен jwt передан в cookie' });
+    }).send({_id: user._id, user: user.email, message: 'Токен jwt передан в cookie'});
   } catch (err) {
     return next(err);
   }
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt').send({ message: 'Успешный выход из аккаунта' })
+  res.clearCookie('jwt').send({message: 'Успешный выход из аккаунта'})
     .catch(next);
 };
 
@@ -79,7 +83,7 @@ const getUserProfile = (req, res, next) => {
 };
 
 const updateUserData = (req, res, next) => {
-  const { body } = req;
+  const {body} = req;
   User.findByIdAndUpdate(
     req.user._id,
     {
@@ -100,6 +104,29 @@ const updateUserData = (req, res, next) => {
       return next(err);
     });
 };
+
+// const updateUserData = (req, res, next) => {
+//   const {body} = req;
+//   User.findByIdAndUpdate(
+//     req.user._id,
+//     {
+//       name: body.name,
+//       email: body.email,
+//     },
+//     {
+//       new: true,
+//       runValidators: true,
+//     },
+//   )
+//     .orFail(() => new NotFoundError('Ничего не найдено'))
+//     .then((user) => getUserData(user, res, next))
+//     .catch((err) => {
+//       if (err instanceof mongoose.Error.ValidationError) {
+//         return next(new BadRequestErr('Передан невалидный id пользователя'));
+//       }
+//       return next(err);
+//     });
+// };
 
 module.exports = {
   getUserProfile,
