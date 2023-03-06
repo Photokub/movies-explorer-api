@@ -26,9 +26,9 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
+app.use(requestLogger);
 app.use(router);
 
-app.use(requestLogger);
 
 const allowedCors = [
   'http://localhost:3000/',
