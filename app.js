@@ -14,7 +14,8 @@ const { DATA_BASE } = require('./utils/mongo-config')
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
-const limiter =  require('./utils/rate-limiter')
+const { limiter } =  require('./utils/rate-limiter')
+const { corsOptions } = require('./utils/cors-config')
 
 mongoose.set('strictQuery', false);
 mongoose.connect(DATA_BASE);
@@ -32,20 +33,6 @@ app.use(helmet());
 app.use(limiter);
 app.use(requestLogger);
 app.use(router);
-
-
-const allowedCors = [
-  'http://localhost:3000/',
-];
-
-const corsOptions = {
-  origin: allowedCors,
-  optionSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
-  credentials: true,
-};
-
 app.use(cors(corsOptions));
 
 // краш-тест
