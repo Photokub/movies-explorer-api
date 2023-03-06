@@ -18,6 +18,11 @@ const {
   UNAUTHORIZED_ERR_MESSAGE
 } = require('../utils/err-messages')
 
+const {
+  TOKEN_HANDLE_SUCCESS_MESSAGE,
+  LOGOUT_SUCCESS_MESSAGE
+} = require('../utils/success-messages')
+
 const createUser = (req, res, next) => {
   const {
     email,
@@ -66,14 +71,14 @@ const login = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
-    }).send({_id: user._id, user: user.email, message: 'Токен jwt передан в cookie'});
+    }).send({_id: user._id, user: user.email, message: TOKEN_HANDLE_SUCCESS_MESSAGE});
   } catch (err) {
     return next(err);
   }
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt').send({message: 'Успешный выход из аккаунта'})
+  res.clearCookie('jwt').send({message: LOGOUT_SUCCESS_MESSAGE})
     .catch(next);
 };
 

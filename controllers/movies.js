@@ -11,6 +11,10 @@ const {
   ACCESS_ERR_MESSAGE,
 } = require('../utils/err-messages')
 
+const {
+  FILM_DELETE_SUCCESS_MESSAGE
+} = require('../utils/success-messages')
+
 const getMovies = async (req, res, next) => {
   try {
     const movies = await Movie.find({owner: req.user._id}).populate('owner');
@@ -42,7 +46,7 @@ const deleteMovie = (req, res, next) => {
         throw new ForbiddenError(ACCESS_ERR_MESSAGE);
       }
       movie.remove()
-        .then(() => res.send({ message: 'Фильм удален' })).catch(next);
+        .then(() => res.send({ message: FILM_DELETE_SUCCESS_MESSAGE })).catch(next);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
