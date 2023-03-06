@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const { PORT = 3000, JWT_SECRET } = process.env;
+const { PORT = 3000, JWT_SECRET, NODE_ENV } = process.env;
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
@@ -19,7 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/filmsdb');
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
-  console.log(`секретный jwt ${JWT_SECRET}`);
+  console.log(`секретный jwt ${ NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret' }`);
 });
 
 app.use(express.json());
