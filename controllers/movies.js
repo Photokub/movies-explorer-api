@@ -9,15 +9,15 @@ const {
   VALIDATION_ERR_MESSAGE,
   NOT_FOUND_ERR_MESSAGE,
   ACCESS_ERR_MESSAGE,
-} = require('../utils/err-messages')
+} = require('../utils/err-messages');
 
 const {
-  FILM_DELETE_SUCCESS_MESSAGE
-} = require('../utils/success-messages')
+  FILM_DELETE_SUCCESS_MESSAGE,
+} = require('../utils/success-messages');
 
 const getMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({owner: req.user._id}).populate('owner');
+    const movies = await Movie.find({ owner: req.user._id }).populate('owner');
     return res.send(movies);
   } catch (err) {
     return next(err);
@@ -26,7 +26,7 @@ const getMovies = async (req, res, next) => {
 
 const saveMovie = async (req, res, next) => {
   try {
-    const movie = await Movie.create({ ...req.body, owner: req.user._id })
+    const movie = await Movie.create({ ...req.body, owner: req.user._id });
     return res.status(201).send(movie);
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {

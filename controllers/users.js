@@ -8,20 +8,20 @@ const UnauthorizedErr = require('../errors/unauth-err');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
 
-const {JWT_SECRET, NODE_ENV} = process.env;
+const { JWT_SECRET, NODE_ENV } = process.env;
 
 const {
   VALIDATION_ERR_MESSAGE,
   NOT_FOUND_ERR_MESSAGE,
   USER_NOT_FOUND_ERR_MESSAGE,
   CONFLICT_ERR_MESSAGE,
-  UNAUTHORIZED_ERR_MESSAGE
-} = require('../utils/err-messages')
+  UNAUTHORIZED_ERR_MESSAGE,
+} = require('../utils/err-messages');
 
 const {
   TOKEN_HANDLE_SUCCESS_MESSAGE,
-  LOGOUT_SUCCESS_MESSAGE
-} = require('../utils/success-messages')
+  LOGOUT_SUCCESS_MESSAGE,
+} = require('../utils/success-messages');
 
 const createUser = (req, res, next) => {
   const {
@@ -38,7 +38,7 @@ const createUser = (req, res, next) => {
     .then((user) => res.send({
       name: user.name,
       email: user.email,
-      id: user._id
+      id: user._id,
     }))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
@@ -57,7 +57,7 @@ const login = async (req, res, next) => {
     password,
   } = req.body;
   try {
-    const user = await User.findOne({email}).select('+password');
+    const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return next(new UnauthorizedErr(UNAUTHORIZED_ERR_MESSAGE));
     }
@@ -65,20 +65,20 @@ const login = async (req, res, next) => {
     if (!result) {
       return next(new UnauthorizedErr(UNAUTHORIZED_ERR_MESSAGE));
     }
-    const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'});
+    const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
     return res.cookie('jwt', token, {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
       sameSite: 'none',
       secure: true,
-    }).send({_id: user._id, user: user.email, message: TOKEN_HANDLE_SUCCESS_MESSAGE});
+    }).send({ _id: user._id, user: user.email, message: TOKEN_HANDLE_SUCCESS_MESSAGE });
   } catch (err) {
     return next(err);
   }
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt').send({message: LOGOUT_SUCCESS_MESSAGE})
+  res.clearCookie('jwt').send({ message: LOGOUT_SUCCESS_MESSAGE })
     .catch(next);
 };
 
@@ -103,8 +103,8 @@ const updateUserData = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     {
-      name: name,
-      email: email,
+      name,
+      email,
     },
     {
       new: true,

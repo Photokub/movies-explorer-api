@@ -5,5 +5,5 @@ const LOGOUT_SUCCESS_MESSAGE = 'Успешный выход из аккаунт�
 module.exports = {
   FILM_DELETE_SUCCESS_MESSAGE,
   TOKEN_HANDLE_SUCCESS_MESSAGE,
-  LOGOUT_SUCCESS_MESSAGE
+  LOGOUT_SUCCESS_MESSAGE,
 };

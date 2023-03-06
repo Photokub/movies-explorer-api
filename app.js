@@ -10,20 +10,20 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const { PORT = 3000, JWT_SECRET, NODE_ENV } = process.env;
-const { DATA_BASE } = require('./utils/mongo-config')
 const { errors } = require('celebrate');
+const { DATA_BASE } = require('./utils/mongo-config');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
-const { limiter } =  require('./utils/rate-limiter')
-const { corsOptions } = require('./utils/cors-config')
+const { limiter } = require('./utils/rate-limiter');
+const { corsOptions } = require('./utils/cors-config');
 
 mongoose.set('strictQuery', false);
 mongoose.connect(DATA_BASE);
 
 app.listen(PORT, () => {
   console.log(`App listening on port: ${PORT}`);
-  console.log(`секретный jwt: ${ NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret' }`);
-  console.log(`база данных: ${ DATA_BASE }`);
+  console.log(`секретный jwt: ${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`);
+  console.log(`база данных: ${DATA_BASE}`);
 });
 
 app.use(express.json());
