@@ -8,7 +8,7 @@ const UnauthorizedErr = require('../errors/unauth-err');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
 
-const {JWT_SECRET} = process.env;
+const {JWT_SECRET, NODE_ENV} = process.env;
 
 const createUser = (req, res, next) => {
   const {
