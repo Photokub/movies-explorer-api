@@ -7,17 +7,8 @@ const ForbiddenError = require('../errors/forbidden-err');
 
 const getMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({}).populate('owner');
+    const movies = await Movie.find({owner: req.user._id}).populate('owner');
     return res.send(movies);
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const getCurrentMovie = async (req, res, next) => {
-  try {
-    const movie = await Movie.findById({ id: req.params._id }).populate('owner');
-    return res.send(movie);
   } catch (err) {
     return next(err);
   }
@@ -36,19 +27,16 @@ const saveMovie = async (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.findById(req.params._id)
+  Movie.findById(req.params.id)
     .then((movie) => {
-      console.log(movie)
       if (!movie) {
         throw new NotFoundError('Невозможно найти');
       }
-      //if (!movie.owner.equals(movieId)) {
       if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Невозможно удалить');
       }
       movie.remove()
-        //.then(() => res.send({ message: 'Фильм удален' })).catch(next);
-        .then(() => res.send({ message: 'Фильм удален' }));
+        .then(() => res.send({ message: 'Фильм удален' })).catch(next);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
@@ -62,5 +50,4 @@ module.exports = {
   getMovies,
   saveMovie,
   deleteMovie,
-  getCurrentMovie
 };

@@ -4,32 +4,32 @@ const validator = require('validator');
 module.exports.validateReg = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(5),
-    name: Joi.string().min(2).max(30),
+    password: Joi.string().required(),
+    name: Joi.string().required().min(2).max(30),
   }),
 });
 
 module.exports.validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(5),
+    password: Joi.string().required(),
   }),
 });
 
 module.exports.validateUserInfo = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
   }),
 });
 
 module.exports.validateMovieCreation = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().min(2).max(300),
-    director: Joi.string().required().min(2).max(300),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
     duration: Joi.number().required(),
-    year: Joi.string().required().min(2).max(4),
-    description: Joi.string().required().min(2).max(3000),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
     image: Joi.string()
       .required()
       .custom((value) => {
@@ -55,13 +55,13 @@ module.exports.validateMovieCreation = celebrate({
         return value;
       }),
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required().min(2).max(300),
-    nameEN: Joi.string().required().min(2).max(300),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 });
 
 module.exports.validateMovieId = celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().required().hex().length(24),
+    id: Joi.string().required().hex().length(24),
   }),
 });
