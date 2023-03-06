@@ -10,6 +10,14 @@ const BadRequestErr = require('../errors/bad-request-err');
 
 const {JWT_SECRET, NODE_ENV} = process.env;
 
+const {
+  VALIDATION_ERR_MESSAGE,
+  NOT_FOUND_ERR_MESSAGE,
+  USER_NOT_FOUND_ERR_MESSAGE,
+  CONFLICT_ERR_MESSAGE,
+  UNAUTHORIZED_ERR_MESSAGE
+} = require('../utils/err-messages')
+
 const createUser = (req, res, next) => {
   const {
     email,
@@ -29,10 +37,10 @@ const createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new BadRequestErr('Переданы некорректные данные пользователя'));
+        return next(new BadRequestErr(VALIDATION_ERR_MESSAGE));
       }
       if (err.code === 11000) {
-        return next(new ConflictErr(`Пользователь с ${email} уже существует`));
+        return next(new ConflictErr(CONFLICT_ERR_MESSAGE));
       }
       return next(err);
     });
@@ -46,11 +54,11 @@ const login = async (req, res, next) => {
   try {
     const user = await User.findOne({email}).select('+password');
     if (!user) {
-      return next(new UnauthorizedErr('Ошибка авторизации 401'));
+      return next(new UnauthorizedErr(UNAUTHORIZED_ERR_MESSAGE));
     }
     const result = await bcrypt.compare(password, user.password);
     if (!result) {
-      return next(new UnauthorizedErr('Ошибка авторизации 401'));
+      return next(new UnauthorizedErr(UNAUTHORIZED_ERR_MESSAGE));
     }
     const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'});
     return res.cookie('jwt', token, {
@@ -71,7 +79,7 @@ const logOut = (req, res, next) => {
 
 function getUserData(id, res, next) {
   if (!id) {
-    return next(new NotFoundError('Пользователь не найден'));
+    return next(new NotFoundError(USER_NOT_FOUND_ERR_MESSAGE));
   }
   return res.send(id);
 }
@@ -98,14 +106,14 @@ const updateUserData = (req, res, next) => {
       runValidators: true,
     },
   )
-    .orFail(() => new NotFoundError('Ничего не найдено'))
+    .orFail(() => new NotFoundError(NOT_FOUND_ERR_MESSAGE))
     .then((user) => getUserData(user, res, next))
     .catch((err) => {
       if (err.code === 11000) {
-        return next(new ConflictErr(`Пользователь с ${email} уже существует`));
+        return next(new ConflictErr(CONFLICT_ERR_MESSAGE));
       }
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new BadRequestErr('Введены некорректные данные'));
+        return next(new BadRequestErr(VALIDATION_ERR_MESSAGE));
       }
       return next(err);
     });
