@@ -14,6 +14,7 @@ const { DATA_BASE } = require('./utils/mongo-config')
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
+const limiter =  require('./utils/rate-limiter')
 
 mongoose.set('strictQuery', false);
 mongoose.connect(DATA_BASE);
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
+app.use(limiter);
 app.use(requestLogger);
 app.use(router);
 
