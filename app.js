@@ -10,16 +10,18 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const { PORT = 3000, JWT_SECRET, NODE_ENV } = process.env;
+const { DATA_BASE } = require('./utils/mongo-config')
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://127.0.0.1:27017/filmsdb');
+mongoose.connect(DATA_BASE);
 
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log(`секретный jwt ${ NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret' }`);
+  console.log(`App listening on port: ${PORT}`);
+  console.log(`секретный jwt: ${ NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret' }`);
+  console.log(`база данных: ${ DATA_BASE }`);
 });
 
 app.use(express.json());
