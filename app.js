@@ -16,6 +16,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
 const { limiter } = require('./utils/rate-limiter');
 const { corsOptions } = require('./utils/cors-config');
+const { CRASH_TEST_MESSAGE } = require('./utils/success-messages');
 
 mongoose.set('strictQuery', false);
 mongoose.connect(DATA_BASE);
@@ -38,7 +39,7 @@ app.use(cors(corsOptions));
 // краш-тест
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    throw new Error(CRASH_TEST_MESSAGE);
   }, 0);
 });
 
