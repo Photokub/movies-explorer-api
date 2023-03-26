@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const { PORT = 3000, JWT_SECRET, NODE_ENV } = process.env;
+const { PORT = 3001, JWT_SECRET, NODE_ENV } = process.env;
 const { errors } = require('celebrate');
 const { DATA_BASE } = require('./utils/mongo-config');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -27,10 +27,10 @@ app.listen(PORT, () => {
   console.log(`база данных: ${DATA_BASE}`);
 });
 
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(requestLogger);
 app.use(limiter);
