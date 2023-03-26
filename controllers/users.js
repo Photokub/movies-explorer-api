@@ -71,7 +71,7 @@ const login = async (req, res, next) => {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
-    }).send({ _id: user._id, user: user.email, message: TOKEN_HANDLE_SUCCESS_MESSAGE });
+    }).send({ _id: user._id, email: user.email, name: user.name, message: TOKEN_HANDLE_SUCCESS_MESSAGE });
   } catch (err) {
     return next(err);
   }
