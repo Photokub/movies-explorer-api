@@ -27,8 +27,8 @@ app.listen(PORT, () => {
   console.log(`база данных: ${DATA_BASE}`);
 });
 
-app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
