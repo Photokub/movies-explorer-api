@@ -27,10 +27,10 @@ app.listen(PORT, () => {
   console.log(`база данных: ${DATA_BASE}`);
 });
 
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors(corsOptions));
 app.use(helmet());
 app.use(requestLogger);
 app.use(limiter);
