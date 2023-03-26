@@ -1,5 +1,5 @@
 const allowedCors = [
-  'http://localhost:3000',
+  'http://localhost:3000'
 ];
 
 const corsOptions = {
