@@ -69,7 +69,7 @@ const login = async (req, res, next) => {
     return res.cookie('jwt', token, {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
-      sameSite: 'secure',
+      sameSite: 'None',
       secure: true,
     }).send({ _id: user._id, email: user.email, name: user.name, message: TOKEN_HANDLE_SUCCESS_MESSAGE });
   } catch (err) {
