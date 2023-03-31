@@ -69,7 +69,7 @@ const login = async (req, res, next) => {
     return res.cookie('jwt', token, {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
-      sameSite: 'Strict',
+      sameSite: 'Lax',
       secure: true,
     }).send({ _id: user._id, email: user.email, name: user.name, message: TOKEN_HANDLE_SUCCESS_MESSAGE });
   } catch (err) {
@@ -78,7 +78,7 @@ const login = async (req, res, next) => {
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt', {sameSite: 'Strict', secure: true}).send({ message: LOGOUT_SUCCESS_MESSAGE })
+  res.clearCookie('jwt', {sameSite: 'Lax', secure: true}).send({ message: LOGOUT_SUCCESS_MESSAGE })
     .catch(next);
 };
 
