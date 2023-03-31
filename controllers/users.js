@@ -78,7 +78,7 @@ const login = async (req, res, next) => {
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt', {sameSite: 'None',}).send({ message: LOGOUT_SUCCESS_MESSAGE })
+  res.clearCookie('jwt', {sameSite: 'None', secure: true}).send({ message: LOGOUT_SUCCESS_MESSAGE })
     .catch(next);
 };
 
