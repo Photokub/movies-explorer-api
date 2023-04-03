@@ -8,7 +8,7 @@ const UnauthorizedErr = require('../errors/unauth-err');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestErr = require('../errors/bad-request-err');
 
-const { JWT_SECRET, NODE_ENV } = process.env;
+const {JWT_SECRET, NODE_ENV} = process.env;
 
 const {
   VALIDATION_ERR_MESSAGE,
@@ -57,7 +57,7 @@ const login = async (req, res, next) => {
     password,
   } = req.body;
   try {
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({email}).select('+password');
     if (!user) {
       return next(new UnauthorizedErr(UNAUTHORIZED_ERR_MESSAGE));
     }
@@ -65,20 +65,25 @@ const login = async (req, res, next) => {
     if (!result) {
       return next(new UnauthorizedErr(UNAUTHORIZED_ERR_MESSAGE));
     }
-    const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
-    return res.cookie('jwt', token, {
-      maxAge: 3600000 * 24 * 7,
-      httpOnly: true,
-      sameSite: 'None',
-      secure: true,
-    }).send({ _id: user._id, email: user.email, name: user.name, message: TOKEN_HANDLE_SUCCESS_MESSAGE });
+    const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'},);
+    return res.cookie('jwt', token,
+      {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: 'None',
+        secure: true,
+        domain: '.photokub.nomoredomains.work'
+      }
+    ).send({_id: user._id, email: user.email, name: user.name, message: TOKEN_HANDLE_SUCCESS_MESSAGE});
   } catch (err) {
     return next(err);
   }
 };
 
 const logOut = (req, res, next) => {
-  res.clearCookie('jwt', {sameSite: 'None', secure: true}).send({ message: LOGOUT_SUCCESS_MESSAGE })
+  res.clearCookie('jwt',
+    {sameSite: 'None', secure: true}
+  ).send({message: LOGOUT_SUCCESS_MESSAGE})
     .catch(next);
 };
 
