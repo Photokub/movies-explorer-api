@@ -1,6 +1,7 @@
 const allowedCors = [
   'http://localhost:3000',
-  'https://photokub.nomoredomains.monster'
+  'https://photokub.nomoredomains.monster',
+  'https://photokub.nomoredomains.monster/'
 ];
 
 const corsOptions = {
