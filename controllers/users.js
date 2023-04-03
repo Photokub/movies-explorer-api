@@ -29,17 +29,29 @@ const createUser = (req, res, next) => {
     password,
     name,
   } = req.body;
+
+  const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'},);
+
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       email,
       password: hash,
       name,
     }))
-    .then((user) => res.send({
-      name: user.name,
-      email: user.email,
-      id: user._id,
-    }))
+    .then((user) => res
+      .cookie('jwt', token,
+        {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: 'None',
+          secure: true,
+          domain: 'photokub.nomoredomains.work'
+        })
+      .send({
+        name: user.name,
+        email: user.email,
+        id: user._id,
+      }))
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new BadRequestErr(VALIDATION_ERR_MESSAGE));
