@@ -89,7 +89,7 @@ const createUser = async (req, res, next) => {
           secure: true,
           domain: 'photokub.nomoredomains.work'
         })
-      .send({
+      .json({
         name: newUser.name,
         email: newUser.email,
         id: newUser._id,
