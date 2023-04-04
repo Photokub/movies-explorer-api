@@ -38,23 +38,22 @@ const createUser = async (req, res, next) => {
       password: hash,
       name,
     })
-  const token = jwt.sign({_id: newUser._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'}, () => {
+  const token = jwt.sign({_id: newUser._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'},);
+
     return res
       .cookie('jwt', token,
         {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
-          sameSite: 'None',
+          sameSite: true,
           secure: true,
+          cache: false
         })
       .send({
         name: newUser.name,
         email: newUser.email,
         id: newUser._id,
       })
-  });
-
-
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
       return next(new BadRequestErr(VALIDATION_ERR_MESSAGE));
@@ -80,7 +79,7 @@ const login = async (req, res, next) => {
     if (!result) {
       return next(new UnauthorizedErr(UNAUTHORIZED_ERR_MESSAGE));
     }
-    const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'}, );
+    const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'},);
     return res.cookie('jwt', token,
       {
         maxAge: 3600000 * 24 * 7,
