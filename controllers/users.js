@@ -23,46 +23,6 @@ const {
   LOGOUT_SUCCESS_MESSAGE,
 } = require('../utils/success-messages');
 
-// const createUser = (req, res, next) => {
-//   const {
-//     email,
-//     password,
-//     name,
-//   } = req.body;
-//
-//   const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'},);
-//
-//   bcrypt.hash(password, 10)
-//     .then((hash) => User.create({
-//       email,
-//       password: hash,
-//       name,
-//     }))
-//     .then((user) => res
-//       .cookie('jwt', token,
-//         {
-//           maxAge: 3600000 * 24 * 7,
-//           httpOnly: true,
-//           sameSite: 'None',
-//           secure: true,
-//           domain: 'photokub.nomoredomains.work'
-//         })
-//       .send({
-//         name: user.name,
-//         email: user.email,
-//         id: user._id,
-//       }))
-//     .catch((err) => {
-//       if (err instanceof mongoose.Error.ValidationError) {
-//         return next(new BadRequestErr(VALIDATION_ERR_MESSAGE));
-//       }
-//       if (err.code === 11000) {
-//         return next(new ConflictErr(CONFLICT_ERR_MESSAGE));
-//       }
-//       return next(err);
-//     });
-// };
-
 const createUser = async (req, res, next) => {
   try{
     const {
@@ -78,7 +38,7 @@ const createUser = async (req, res, next) => {
       password: hash,
       name,
     })
-  const token = jwt.sign({_id: user._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'},);
+  const token = jwt.sign({_id: newUser._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {expiresIn: '7d'},);
 
     return res
       .cookie('jwt', token,
@@ -89,7 +49,7 @@ const createUser = async (req, res, next) => {
           secure: true,
           domain: 'photokub.nomoredomains.work'
         })
-      .json({
+      .send({
         name: newUser.name,
         email: newUser.email,
         id: newUser._id,
