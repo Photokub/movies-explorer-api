@@ -45,7 +45,7 @@ const createUser = async (req, res, next) => {
         {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
-          sameSite: 'Lax',
+          sameSite: 'Strict',
           secure: true,
         })
       .send({
