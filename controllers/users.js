@@ -47,7 +47,6 @@ const createUser = async (req, res, next) => {
           httpOnly: true,
           sameSite: 'None',
           secure: true,
-          domain: 'photokub.nomoredomains.work'
         })
       .send({
         name: newUser.name,
@@ -86,7 +85,6 @@ const login = async (req, res, next) => {
         httpOnly: true,
         sameSite: 'None',
         secure: true,
-        domain: 'photokub.nomoredomains.work'
       }
     ).send({_id: user._id, email: user.email, name: user.name, message: TOKEN_HANDLE_SUCCESS_MESSAGE});
   } catch (err) {
