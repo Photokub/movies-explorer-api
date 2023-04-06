@@ -38,7 +38,8 @@ const createUser = async (req, res, next) => {
       password: hash,
       name,
     })
-  const token = jwt.sign({_id: newUser._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {algorithm: "HS256", expiresIn: '7d'});
+
+    const token = jwt.sign({_id: newUser._id}, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {algorithm: "HS256", expiresIn: '7d'});
 
     return res
       .cookie('jwt', token,
@@ -53,7 +54,6 @@ const createUser = async (req, res, next) => {
         email: newUser.email,
         id: newUser._id,
       })
-
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
       return next(new BadRequestErr(VALIDATION_ERR_MESSAGE));
